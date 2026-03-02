@@ -1,0 +1,465 @@
+:root {
+    --bg-color: #000000;
+    --text-main: #ffffff;
+    --text-sub: rgba(255, 255, 255, 0.6);
+    --glass: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --accent-blue: #007AFF;
+    --led-glow: #00f2ff;
+}
+
+.light-mode {
+    --bg-color: #f2f2f7;
+    --text-main: #000000;
+    --text-sub: rgba(0, 0, 0, 0.5);
+    --glass: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(0, 0, 0, 0.05);
+    --accent-blue: #007AFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+    transition: background 0.5s ease;
+}
+
+/* --- LED AMBIENT BACKGROUND --- */
+.led-ambient-container {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    filter: blur(100px);
+    opacity: 0.6;
+}
+
+.led-blob {
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    animation: moveBlob 15s infinite alternate;
+}
+
+.blue { background: #007AFF; top: -100px; left: -100px; }
+.purple { background: #5856D6; bottom: -100px; right: -100px; animation-delay: -5s; }
+.cyan { background: #00f2ff; top: 40%; left: 30%; animation-duration: 20s; }
+
+@keyframes moveBlob {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(100px, 50px) scale(1.2); }
+}
+
+/* --- IOS LAYOUT & DYNAMIC ISLAND --- */
+.ios-vessel {
+    width: 90%;
+    max-width: 420px;
+    padding: 60px 0;
+    text-align: center;
+}
+
+.dynamic-island {
+    background: #000;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 50px;
+    display: inline-flex; 
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    user-select: none;
+    overflow: hidden;
+}
+
+.dynamic-island:active {
+    transform: scale(0.92) translateY(2px);
+    filter: brightness(1.2);
+}
+
+.island-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: all 0.4s ease;
+}
+
+.island-content i { color: #FFD60A; flex-shrink: 0; }
+.island-fade { opacity: 0; transform: scale(0.8); filter: blur(4px); }
+
+/* --- PROFILE (Dynamic iOS Vintage) --- */
+.avatar-ring { 
+    position: relative; 
+    width: 135px; 
+    height: 135px; 
+    margin: 0 auto 25px;
+    /* Memberikan kedalaman pada profil */
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4));
+}
+
+.main-avatar { 
+    width: 100%; 
+    height: 100%; 
+    border-radius: 40px; /* Squircle asli iOS */
+    object-fit: cover; 
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    /* Efek transisi halus saat di-load */
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.avatar-ring:hover .main-avatar {
+    transform: scale(1.05) translateY(-5px);
+}
+
+.status-indicator { 
+    position: absolute; 
+    bottom: 8px; 
+    right: 8px; 
+    width: 22px; 
+    height: 22px; 
+    background: #34C759; 
+    border: 4px solid var(--bg-color); 
+    border-radius: 50%;
+    /* Efek LED menyala */
+    box-shadow: 0 0 15px rgba(52, 199, 89, 0.7);
+    z-index: 2;
+}
+
+.ios-title { 
+    font-size: 32px; 
+    font-weight: 900; 
+    letter-spacing: -1.5px; 
+    margin-bottom: 2px;
+    /* Vintage Silver Metallic Effect */
+    background: linear-gradient(180deg, #FFFFFF 20%, #B0B0B0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+}
+
+.ios-subtitle { 
+    color: var(--text-sub); 
+    font-size: 12.5px;
+    font-weight: 600; 
+    text-transform: uppercase;
+    letter-spacing: 1.8px; /* Efek vintage branded look */
+    margin-top: 8px;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Garis dekoratif samping subtitle agar lebih kekinian */
+.ios-subtitle::before, .ios-subtitle::after {
+    content: '';
+    width: 20px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+}
+
+
+/* --- 3D BUTTONS DYNAMIC --- */
+.links-group {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ios-item {
+    background: var(--glass);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border);
+    padding: 18px;
+    border-radius: 24px;
+    text-decoration: none;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    overflow: hidden;
+    /* Efek 3D: Shadow luar dan Inner Glow */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.1);
+    transition: transform 0.3s cubic-bezier(0.1, 0.7, 0.1, 1);
+}
+
+.ios-item:active { transform: scale(0.95) translateY(2px); }
+
+/* LED Border Jalan Otomatis (Ada Terus) */
+.led-border-line {
+    position: absolute;
+    bottom: 0;
+    left: -100%;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--led-glow), var(--accent-blue), transparent);
+    /* Animasi jalan terus tanpa nunggu dipencet */
+    animation: ledRunning 3s linear infinite;
+}
+
+@keyframes ledRunning {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.icon-box {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+}
+
+/* Warna Ikon */
+.portfolio { background: #5856D6; }
+.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+.tiktok { background: #000; border: 1px solid rgba(255,255,255,0.3); }
+.youtube { background: #FF0000; }
+.discord { background: #5865F2; } 
+.github { background: #333; }
+.email { background: linear-gradient(135deg, #1d95e8 0%, #065af3 100%); }
+
+/* Warna Ikon Downloader - Dynamic Green Yellow */
+.downloader { 
+    background: linear-gradient(135deg, #34C759 0%, #D2FF28 100%); 
+    /* Efek inner glow tambahan biar makin mewah */
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efek cahaya lewat (Shine Effect) pada icon box */
+.downloader::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transform: rotate(45deg);
+    animation: shineIcon 3s infinite;
+}
+
+@keyframes shineIcon {
+    0% { transform: translateX(-150%) rotate(45deg); }
+    100% { transform: translateX(150%) rotate(45deg); }
+}
+
+
+.label { font-weight: 600; flex-grow: 1; text-align: left; font-size: 17px; }
+.chevron { font-size: 14px; opacity: 0.3; }
+
+/* --- CONTAINER EXTRA LINKS (RAPI) --- */
+/* --- CONTAINER EXTRA LINKS (CLEAN VERSION) --- */
+.extra-links {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Samakan dengan gap utama */
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    
+    /* Hilangkan semua potensi visual kotak */
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+
+    /* Animasi smooth slide & scale */
+    transform: translateY(-20px) scale(0.95);
+    transition: max-height 0.7s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.4s ease, 
+                transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                margin 0.4s ease;
+}
+
+/* Pastikan di Light Mode kontainer extra tetap gaib */
+.light-mode .extra-links {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+
+.extra-links.active {
+    max-height: 500px; /* Sesuaikan jumlah tombol */
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    margin-top: 16px !important; /* Jarak dari tombol Email */
+    margin-bottom: 16px !important; /* Jarak ke tombol See More */
+}
+
+
+/* --- TOMBOL SEE MORE (CLEAN & DYNAMIC) --- */
+.see-more-btn {
+    width: 100%;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    color: var(--text-sub);
+    padding: 14px;
+    border-radius: 24px; /* Samakan dengan radius tombol link */
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 12px;
+    /* Shadow agar terlihat 3D ringan */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.1, 0.7, 0.1, 1);
+}
+
+/* Hover: Sedikit lebih terang & naik */
+.see-more-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--text-main);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Active: Efek tekan (Haptic feel) */
+.see-more-btn:active {
+    transform: scale(0.97);
+}
+
+.see-more-btn i {
+    font-size: 12px;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Rotasi Icon pas Open */
+.see-more-btn.open i {
+    transform: rotate(180deg);
+}
+
+/* Tweak khusus Light Mode agar tetap cantik */
+.light-mode .see-more-btn {
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+/* --- FOOTER & ACTIONS --- */
+.actions-row { margin-top: 30px; }
+.theme-btn {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    padding: 12px 24px;
+    border-radius: 18px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* --- FOOTER COMPLETE (Sync with Theme) --- */
+.ios-footer {
+    margin-top: 80px;
+    padding-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Badge Oval Profile Mini - Sekarang pakai variabel CSS */
+.footer-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--glass); /* Otomatis ganti warna sesuai mode */
+    padding: 5px 15px 5px 5px;
+    border-radius: 40px;
+    border: 1px solid var(--glass-border); /* Otomatis ganti warna sesuai mode */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    margin-bottom: 10px;
+    transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.footer-badge:hover {
+    transform: scale(1.05);
+    background: rgba(128, 128, 128, 0.1);
+}
+
+.mini-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1.5px solid var(--accent-blue);
+}
+
+.mini-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.badge-text {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-main); /* Ikut jadi Hitam di light mode, Putih di dark mode */
+    letter-spacing: 0.5px;
+}
+
+/* Created By Style */
+.created-by {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-sub); /* Otomatis abu-abu gelap/terang */
+}
+
+.created-by span {
+    color: var(--accent-blue);
+    font-weight: 800;
+    text-shadow: 0 0 10px rgba(0, 122, 255, 0.2);
+}
+
+/* Copyright Style */
+.copyright {
+    font-size: 10px;
+    color: var(--text-sub);
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-top: 5px;
+}
+
+
+
+/* ANIMATION */
+.fade-in { animation: iosEntrance 1s ease-out; }
+@keyframes iosEntrance {
+    from { opacity: 0; transform: scale(1.05) translateY(20px); filter: blur(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+}
