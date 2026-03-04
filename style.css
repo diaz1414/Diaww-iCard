@@ -1,8 +1,10 @@
 :root {
     --bg-color: #000000;
+    /* Ganti 'bg-dark.png' dengan URL gambar dark mode kamu */
+    --bg-image: url('bg-dark.png'); 
     --text-main: #ffffff;
     --text-sub: rgba(255, 255, 255, 0.6);
-    --glass: rgba(255, 255, 255, 0.08);
+    --glass: rgba(0, 0, 0, 0.3); /* Dibuat sedikit gelap agar PNG di belakang terlihat */
     --glass-border: rgba(255, 255, 255, 0.12);
     --accent-blue: #007AFF;
     --led-glow: #00f2ff;
@@ -10,34 +12,63 @@
 
 .light-mode {
     --bg-color: #f2f2f7;
+    /* Ganti 'bg-light.png' dengan URL gambar light mode kamu */
+    --bg-image: url('bg-light.png');
     --text-main: #000000;
     --text-sub: rgba(0, 0, 0, 0.5);
-    --glass: rgba(255, 255, 255, 0.7);
+    --glass: rgba(255, 255, 255, 0.4);
     --glass-border: rgba(0, 0, 0, 0.05);
-    --accent-blue: #007AFF;
 }
-
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
     background-color: var(--bg-color);
     color: var(--text-main);
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
     min-height: 100vh;
+    
+    /* Tambahkan/Update bagian ini agar konten ke tengah */
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Tengah secara Horizontal */
+    align-items: center;     /* Tengah secara Vertikal */
+    
     overflow-x: hidden;
     transition: background 0.5s ease;
+    margin: 0; /* Pastikan tidak ada margin default browser */
 }
 
-/* --- LED AMBIENT BACKGROUND --- */
+/* --- BACKGROUND IMAGE LAYER --- */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Mengambil variabel gambar sesuai mode */
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -2; /* Di bawah LED Blob */
+    transition: background-image 0.5s ease-in-out;
+}
+
+/* --- LED AMBIENT ADJUSTMENT --- */
 .led-ambient-container {
     position: fixed;
     inset: 0;
     z-index: -1;
     overflow: hidden;
     filter: blur(100px);
-    opacity: 0.6;
+    /* Kita turunkan opacity sedikit agar gambar PNG di belakangnya ngintip dikit */
+    opacity: 0.4; 
+}
+
+/* Biar tombol kelihatan lebih nyatu sama background baru */
+.ios-item {
+    background: var(--glass);
+    backdrop-filter: blur(30px) saturate(150%);
+    -webkit-backdrop-filter: blur(30px) saturate(150%);
 }
 
 .led-blob {
@@ -125,18 +156,38 @@ body {
 
 .status-indicator { 
     position: absolute; 
-    bottom: 8px; 
-    right: 8px; 
-    width: 22px; 
-    height: 22px; 
+    bottom: 6px; 
+    right: 6px; 
+    width: 24px; /* Sedikit lebih besar agar makin jelas */
+    height: 24px; 
     background: #34C759; 
-    border: 4px solid var(--bg-color); 
+    border: 3.5px solid var(--bg-color); 
     border-radius: 50%;
-    /* Efek LED menyala */
-    box-shadow: 0 0 15px rgba(52, 199, 89, 0.7);
+    
+    /* Efek LED Menyala Berlapis */
+    box-shadow: 
+        0 0 20px rgba(52, 199, 89, 0.8), /* Outer Glow utama */
+        0 0 40px rgba(52, 199, 89, 0.4), /* Glow tipis di kejauhan */
+        inset 0 0 6px rgba(255, 255, 255, 0.5); /* Inner light biar kerasa 3D */
+    
     z-index: 2;
+    
+    /* Animasi Berdenyut (Pulse) */
+    animation: ledPulse 2s infinite ease-in-out;
 }
 
+@keyframes ledPulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: brightness(1);
+        box-shadow: 0 0 20px rgba(52, 199, 89, 0.8);
+    }
+    50% {
+        transform: scale(1.1); /* Sedikit membesar */
+        filter: brightness(1.3); /* Makin terang */
+        box-shadow: 0 0 30px rgba(52, 199, 89, 1);
+    }
+}
 .ios-title { 
     font-size: 32px; 
     font-weight: 900; 
@@ -150,17 +201,18 @@ body {
 }
 
 .ios-subtitle { 
-    color: var(--text-sub); 
-    font-size: 12.5px;
-    font-weight: 600; 
+    color: var(--text-main); /* Ganti ke text-main agar warna lebih solid/putih terang */
+    font-size: 13px; /* Naikkan sedikit ukurannya */
+    font-weight: 900; /* Tebal maksimal */
     text-transform: uppercase;
-    letter-spacing: 1.8px; /* Efek vintage branded look */
-    margin-top: 8px;
-    opacity: 0.8;
+    letter-spacing: 2px; /* Jarak antar huruf lebih renggang agar makin 'branded' */
+    margin-top: 10px;
+    opacity: 1; /* Hilangkan transparansi agar warna keluar 100% */
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5); /* Tambahkan shadow agar teks 'ngangkat' dari background */
 }
 
 /* Garis dekoratif samping subtitle agar lebih kekinian */
@@ -434,27 +486,57 @@ body {
 
 /* Created By Style */
 .created-by {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text-sub); /* Otomatis abu-abu gelap/terang */
+    font-size: 15px; /* Naikkan sedikit agar terbaca jelas */
+    font-weight: 800; /* Bikin teks 'Created by' jadi Extra Bold */
+    color: var(--text-main); /* Ganti dari text-sub ke text-main agar lebih putih solid */
+    letter-spacing: 0.5px;
+    opacity: 1;
 }
 
 .created-by span {
     color: var(--accent-blue);
-    font-weight: 800;
-    text-shadow: 0 0 10px rgba(0, 122, 255, 0.2);
+    font-weight: 900; /* Nama pembuat (Diaww) tebal maksimal */
+    text-transform: uppercase; /* Bikin huruf besar semua agar makin gahar */
+    /* Efek Neon Glow yang lebih tajam */
+    text-shadow: 0 0 15px rgba(0, 122, 255, 0.6), 
+                 0 0 5px rgba(0, 122, 255, 0.4);
+    transition: 0.3s ease;
 }
 
+/* Efek hover opsional: Nama makin nyala pas disentuh */
+.created-by span:hover {
+    filter: brightness(1.5);
+    text-shadow: 0 0 25px rgba(0, 122, 255, 0.8);
+}
 /* Copyright Style */
 .copyright {
-    font-size: 10px;
-    color: var(--text-sub);
-    opacity: 0.6;
+    font-size: 11px; /* Naikkan sedikit agar tetap terbaca */
+    color: var(--text-main); /* Pakai warna utama agar lebih solid */
+    opacity: 0.5; /* Tipis tapi tegas */
     text-transform: uppercase;
-    letter-spacing: 1.2px;
-    margin-top: 5px;
+    letter-spacing: 3px; /* Jarak huruf lebar bikin kesan eksklusif/mahal */
+    margin-top: 12px;
+    font-weight: 700; /* Bikin Bold agar konsisten dengan gaya iCard kamu */
+    
+    /* Efek Glassmorphism kecil di teks */
+    background: rgba(255, 255, 255, 0.05);
+    padding: 6px 15px;
+    border-radius: 50px;
+    display: inline-block;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    
+    /* Animasi halus saat hover */
+    transition: all 0.3s ease;
+    cursor: default;
+    user-select: none;
 }
 
+.copyright:hover {
+    opacity: 1;
+    letter-spacing: 4px; /* Huruf merenggang sedikit pas disentuh, efek tech banget */
+    background: rgba(255, 255, 255, 0.1);
+}
 
 
 /* ANIMATION */
