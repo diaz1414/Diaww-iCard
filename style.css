@@ -1,3 +1,19 @@
+/* --- RESET GLOBAL UNTUK MOBILE --- */
+* {
+    /* Ini yang hapus warna biru pas diklik di HP */
+    -webkit-tap-highlight-color: transparent;
+    
+    /* Ini biar teks gak gampang ke-select pas lagi scroll (opsional tapi keren) */
+    -webkit-touch-callout: none;
+    
+    /* Memastikan box-sizing tetap aman */
+    box-sizing: border-box;
+}
+
+/* Biar gak ada garis kotak (outline) pas diklik di desktop juga */
+*:focus {
+    outline: none;
+}
 :root {
     --bg-color: #000000;
     /* Ganti 'bg-dark.png' dengan URL gambar dark mode kamu */
