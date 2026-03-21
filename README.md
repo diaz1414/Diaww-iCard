@@ -1,4 +1,4 @@
-# 🪪 Diaww-iCard
+## 🪪 Diaww-iCard
 
 <div align="center">
 
@@ -88,8 +88,7 @@ Kontribusi selalu terbuka! Jika kamu punya ide fitur baru atau menemukan bug:
 **Diaz**
 * GitHub: [@diaz1414](https://github.com/diaz1414)
 * Project Link: [Diaww-iCard](https://github.com/diaz1414/Diaww-iCard)
-* Live Website**: [diaz1414.github.io/Diaww-iCard](https://diaz1414.github.io/Diaww-iCard/)
-
+* Live Website: [icard.diaww.my.id](https://icard.diaww.my.id)
 
 ---
 
