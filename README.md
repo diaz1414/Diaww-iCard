@@ -1,6 +1,6 @@
 # 🪪 Diaww-iCard
 
-![GitHub Stars]<div align="center">
+<div align="center">
 
 ![GitHub Stars](https://img.shields.io/github/stars/diaz1414/Diaww-iCard?style=for-the-badge&color=gold)
 ![GitHub Forks](https://img.shields.io/github/forks/diaz1414/Diaww-iCard?style=for-the-badge&color=blue)
