@@ -1,8 +1,17 @@
 # 🪪 Diaww-iCard
 
-![GitHub Stars](https://img.shields.io/github/stars/diaz1414/Diaww-iCard?style=for-the-badge)
-![GitHub Forks](https://img.shields.io/github/forks/diaz1414/Diaww-iCard?style=for-the-badge)
-![License](https://img.shields.io/github/license/diaz1414/Diaww-iCard?style=for-the-badge)
+![GitHub Stars]<div align="center">
+
+![GitHub Stars](https://img.shields.io/github/stars/diaz1414/Diaww-iCard?style=for-the-badge&color=gold)
+![GitHub Forks](https://img.shields.io/github/forks/diaz1414/Diaww-iCard?style=for-the-badge&color=blue)
+![License](https://img.shields.io/github/license/diaz1414/Diaww-iCard?style=for-the-badge&color=green)
+
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/javascript-%23F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=black)
+
+</div>
+
 
 **Diaww-iCard** adalah sebuah kartu identitas digital (Digital Business Card) berbasis web yang modern, responsif, dan elegan. Cocok digunakan untuk personal branding, portofolio singkat, atau sebagai halaman "Link in Bio" untuk media sosial kamu.
 
