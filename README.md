@@ -66,7 +66,9 @@ Untuk mengubah informasi di dalam kartu:
 ---
 
 ## 📸 Preview
-*(Tambahkan screenshot atau GIF preview di sini agar pengunjung bisa langsung melihat hasilnya!)*
+<div align="center">
+  <img src="assets/img/preview.png" alt="Diaww-iCard Preview" width="700">
+</div>
 
 ---
 
