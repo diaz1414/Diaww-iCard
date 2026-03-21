@@ -5,6 +5,9 @@
 ![GitHub Stars](https://img.shields.io/github/stars/diaz1414/Diaww-iCard?style=for-the-badge&color=gold)
 ![GitHub Forks](https://img.shields.io/github/forks/diaz1414/Diaww-iCard?style=for-the-badge&color=blue)
 ![License](https://img.shields.io/github/license/diaz1414/Diaww-iCard?style=for-the-badge&color=green)
+![GitHub last commit](https://img.shields.io/github/last-commit/diaz1414/Diaww-iCard?style=for-the-badge&color=orange)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/diaz1414/Diaww-iCard?style=for-the-badge&color=brightgreen)
+
 
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
