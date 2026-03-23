@@ -2,10 +2,10 @@
 * {
     /* Ini yang hapus warna biru pas diklik di HP */
     -webkit-tap-highlight-color: transparent;
-    
+
     /* Ini biar teks gak gampang ke-select pas lagi scroll (opsional tapi keren) */
     -webkit-touch-callout: none;
-    
+
     /* Memastikan box-sizing tetap aman */
     box-sizing: border-box;
 }
@@ -14,42 +14,67 @@
 *:focus {
     outline: none;
 }
+
 :root {
-    --bg-color: #000000;
-    /* Ganti 'bg-dark.png' dengan URL gambar dark mode kamu */
-    --bg-image: url('bg-dark.png'); 
-    --text-main: #ffffff;
-    --text-sub: rgba(255, 255, 255, 0.6);
-    --glass: rgba(0, 0, 0, 0.3); /* Dibuat sedikit gelap agar PNG di belakang terlihat */
-    --glass-border: rgba(255, 255, 255, 0.12);
-    --accent-blue: #007AFF;
-    --led-glow: #00f2ff;
+    /* Dark Mode - High Contrast Deep Obsidian */
+    --bg-color: hsl(240, 15%, 4%);
+    --bg-image: url('bg-dark.png');
+    --text-main: hsl(0, 0%, 100%);
+    --text-sub: hsl(240, 10%, 75%);
+    --glass: hsla(240, 15%, 12%, 0.85);
+    --glass-border: hsla(0, 0%, 100%, 0.2);
+    --accent-blue: hsl(210, 100%, 55%);
+    --led-glow: hsl(180, 100%, 50%);
+    --card-shadow: 0 30px 60px -15px hsla(0, 0%, 0%, 0.9);
+    --inner-glow: inset 0 1px 0 hsla(0, 0%, 100%, 0.15), inset 0 -1px 0 hsla(0, 0%, 0%, 0.3);
 }
 
 .light-mode {
-    --bg-color: #f2f2f7;
-    /* Ganti 'bg-light.png' dengan URL gambar light mode kamu */
+    /* Light Mode - Enhanced Snow */
+    --bg-color: hsl(240, 10%, 98%);
     --bg-image: url('bg-light.png');
-    --text-main: #000000;
-    --text-sub: rgba(0, 0, 0, 0.5);
-    --glass: rgba(255, 255, 255, 0.4);
-    --glass-border: rgba(0, 0, 0, 0.05);
+    --text-main: hsl(240, 20%, 8%);
+    --text-sub: hsl(240, 10%, 40%);
+    --glass: hsla(0, 0%, 100%, 0.95);
+    --glass-border: hsla(0, 0%, 0%, 0.15);
+    --card-shadow: 0 10px 25px hsla(0, 0%, 0%, 0.08);
+    --inner-glow: inset 0 1px 0 hsla(0, 0%, 100%, 1), inset 0 -1px 0 hsla(0, 0%, 0%, 0.05);
+}
+
+/* --- GRAIN OVERLAY (VINTAGE) --- */
+.grain-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+    opacity: 0.08;
+    z-index: 10;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+}
+
+/* --- PERSPECTIVE WRAPPER --- */
+.perspective-wrapper {
+    perspective: 1500px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
 }
 
 body {
     background-color: var(--bg-color);
     color: var(--text-main);
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
-    
-    /* Perbaikan Scroll di HP */
-    min-height: -webkit-fill-available; /* Biar pas di layar iOS/Android */
-    width: 100%;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-x: hidden;
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: -webkit-fill-available;
+    /* Biar pas di layar iOS/Android */
     transition: background 0.5s ease;
+    scroll-behavior: smooth;
 }
 
 /* --- BACKGROUND IMAGE LAYER --- */
@@ -57,24 +82,24 @@ body::before {
     content: "";
     position: fixed;
     /* Gunakan inset agar benar-benar mengunci ke pojok layar */
-    inset: 0; 
+    inset: 0;
     width: 100%;
     /* Gunakan 100vh tapi tambahkan hack untuk mobile */
-    height: 100vh; 
-    
+    height: 100vh;
+
     background-image: var(--bg-image);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    
+
     /* Penting: Mencegah gambar bergeser saat address bar HP hilang/tampil */
-    background-attachment: scroll; 
-    
+    background-attachment: scroll;
+
     z-index: -2;
     transition: background-image 0.5s ease-in-out;
-    
+
     /* Mematikan interaksi agar tidak mengganggu scroll */
-    pointer-events: none; 
+    pointer-events: none;
 }
 
 /* --- LED AMBIENT ADJUSTMENT --- */
@@ -85,7 +110,7 @@ body::before {
     overflow: hidden;
     filter: blur(100px);
     /* Kita turunkan opacity sedikit agar gambar PNG di belakangnya ngintip dikit */
-    opacity: 0.4; 
+    opacity: 0.4;
 }
 
 /* Biar tombol kelihatan lebih nyatu sama background baru */
@@ -97,26 +122,50 @@ body::before {
 
 .led-blob {
     position: absolute;
-    width: 400px; height: 400px;
+    width: 400px;
+    height: 400px;
     border-radius: 50%;
     animation: moveBlob 15s infinite alternate;
 }
 
-.blue { background: #007AFF; top: -100px; left: -100px; }
-.purple { background: #5856D6; bottom: -100px; right: -100px; animation-delay: -5s; }
-.cyan { background: #00f2ff; top: 40%; left: 30%; animation-duration: 20s; }
+.blue {
+    background: #007AFF;
+    top: -100px;
+    left: -100px;
+}
+
+.purple {
+    background: #5856D6;
+    bottom: -100px;
+    right: -100px;
+    animation-delay: -5s;
+}
+
+.cyan {
+    background: #00f2ff;
+    top: 40%;
+    left: 30%;
+    animation-duration: 20s;
+}
 
 @keyframes moveBlob {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(100px, 50px) scale(1.2); }
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(100px, 50px) scale(1.2);
+    }
 }
 
 /* --- IOS LAYOUT & DYNAMIC ISLAND --- */
 .ios-vessel {
-    width: 90%;
-    max-width: 420px;
-    padding: 60px 0;
+    width: 95%;
+    max-width: 440px;
+    padding: 60px 20px;
     text-align: center;
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
 }
 
 .dynamic-island {
@@ -124,12 +173,12 @@ body::before {
     color: white;
     padding: 10px 25px;
     border-radius: 50px;
-    display: inline-flex; 
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 40px;
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     cursor: pointer;
     transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     user-select: none;
@@ -151,24 +200,53 @@ body::before {
     transition: all 0.4s ease;
 }
 
-.island-content i { color: #FFD60A; flex-shrink: 0; }
-.island-fade { opacity: 0; transform: scale(0.8); filter: blur(4px); }
-
-/* --- PROFILE (Dynamic iOS Vintage) --- */
-.avatar-ring { 
-    position: relative; 
-    width: 135px; 
-    height: 135px; 
-    margin: 0 auto 25px;
-    /* Memberikan kedalaman pada profil */
-    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4));
+.island-content i {
+    color: #FFD60A;
+    flex-shrink: 0;
 }
 
-.main-avatar { 
-    width: 100%; 
-    height: 100%; 
-    border-radius: 40px; /* Squircle asli iOS */
-    object-fit: cover; 
+.island-fade {
+    opacity: 0;
+    transform: scale(0.8);
+    filter: blur(4px);
+}
+
+/* --- PROFILE (Dynamic iOS Vintage) --- */
+.avatar-ring {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 30px;
+    filter: drop-shadow(0 20px 40px hsla(0, 0%, 0%, 0.4));
+    position: relative;
+}
+
+.avatar-ring::after {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%);
+    opacity: 0.15;
+    z-index: -1;
+    border-radius: 50%;
+    animation: rotateGlow 10s linear infinite;
+}
+
+@keyframes rotateGlow {
+    from {
+        transform: rotate(0deg) scale(1);
+    }
+
+    to {
+        transform: rotate(360deg) scale(1.1);
+    }
+}
+
+.main-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 40px;
+    /* Squircle asli iOS */
+    object-fit: cover;
     border: 2px solid rgba(255, 255, 255, 0.2);
     /* Efek transisi halus saat di-load */
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -178,77 +256,103 @@ body::before {
     transform: scale(1.05) translateY(-5px);
 }
 
-.status-indicator { 
-    position: absolute; 
-    bottom: 6px; 
-    right: 6px; 
-    width: 24px; /* Sedikit lebih besar agar makin jelas */
-    height: 24px; 
-    background: #34C759; 
-    border: 3.5px solid var(--bg-color); 
+.status-indicator {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    width: 24px;
+    /* Sedikit lebih besar agar makin jelas */
+    height: 24px;
+    background: #34C759;
+    border: 3.5px solid var(--bg-color);
     border-radius: 50%;
-    
+
     /* Efek LED Menyala Berlapis */
-    box-shadow: 
-        0 0 20px rgba(52, 199, 89, 0.8), /* Outer Glow utama */
-        0 0 40px rgba(52, 199, 89, 0.4), /* Glow tipis di kejauhan */
-        inset 0 0 6px rgba(255, 255, 255, 0.5); /* Inner light biar kerasa 3D */
-    
+    box-shadow:
+        0 0 20px rgba(52, 199, 89, 0.8),
+        /* Outer Glow utama */
+        0 0 40px rgba(52, 199, 89, 0.4),
+        /* Glow tipis di kejauhan */
+        inset 0 0 6px rgba(255, 255, 255, 0.5);
+    /* Inner light biar kerasa 3D */
+
     z-index: 2;
-    
+
     /* Animasi Berdenyut (Pulse) */
     animation: ledPulse 2s infinite ease-in-out;
 }
 
 @keyframes ledPulse {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1);
         filter: brightness(1);
         box-shadow: 0 0 20px rgba(52, 199, 89, 0.8);
     }
+
     50% {
-        transform: scale(1.1); /* Sedikit membesar */
-        filter: brightness(1.3); /* Makin terang */
+        transform: scale(1.1);
+        /* Sedikit membesar */
+        filter: brightness(1.3);
+        /* Makin terang */
         box-shadow: 0 0 30px rgba(52, 199, 89, 1);
     }
 }
-.ios-title { 
-    font-size: 32px; 
-    font-weight: 900; 
-    letter-spacing: -1.5px; 
-    margin-bottom: 2px;
-    /* Vintage Silver Metallic Effect */
-    background: linear-gradient(180deg, #FFFFFF 20%, #B0B0B0 100%);
+
+.ios-title {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    margin-bottom: 4px;
+    background: linear-gradient(135deg, hsl(0, 0%, 100%) 0%, hsl(0, 0%, 75%) 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+    filter: drop-shadow(0 10px 20px hsla(0, 0%, 0%, 0.3));
 }
 
-.ios-subtitle { 
-    color: var(--text-main); /* Ganti ke text-main agar warna lebih solid/putih terang */
-    font-size: 13px; /* Naikkan sedikit ukurannya */
-    font-weight: 900; /* Tebal maksimal */
-    text-transform: uppercase;
-    letter-spacing: 2px; /* Jarak antar huruf lebih renggang agar makin 'branded' */
-    margin-top: 10px;
-    opacity: 1; /* Hilangkan transparansi agar warna keluar 100% */
+.ios-subtitle {
+    color: var(--text-sub);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    margin-top: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.5); /* Tambahkan shadow agar teks 'ngangkat' dari background */
+    gap: 8px;
 }
 
-/* Garis dekoratif samping subtitle agar lebih kekinian */
-.ios-subtitle::before, .ios-subtitle::after {
+.ios-title {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    margin-bottom: 4px;
+    color: hsl(0, 0%, 100%);
+    text-shadow: 0 10px 30px hsla(0, 0%, 0%, 0.5);
+    /* Strong shadow for light mode legibility */
+}
+
+.light-mode .ios-title {
+    color: hsl(0, 0%, 100%);
+    text-shadow: 0 10px 30px hsla(0, 0%, 0%, 0.5);
+}
+
+.ios-subtitle::before,
+.ios-subtitle::after {
     content: '';
     width: 20px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
 }
 
+.light-mode .ios-subtitle {
+    color: hsl(0, 0%, 100%);
+    text-shadow: 0 5px 15px hsla(0, 0%, 0%, 0.5);
+    font-weight: 600;
+}
 
-/* --- 3D BUTTONS DYNAMIC --- */
 .links-group {
     margin-top: 40px;
     display: flex;
@@ -258,24 +362,54 @@ body::before {
 
 .ios-item {
     background: var(--glass);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
+    backdrop-filter: blur(50px) saturate(220%);
+    -webkit-backdrop-filter: blur(50px) saturate(220%);
     border: 1px solid var(--glass-border);
-    padding: 18px;
-    border-radius: 24px;
+    padding: 24px;
+    border-radius: 28px;
     text-decoration: none;
     color: var(--text-main);
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 20px;
     position: relative;
     overflow: hidden;
-    /* Efek 3D: Shadow luar dan Inner Glow */
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.1);
-    transition: transform 0.3s cubic-bezier(0.1, 0.7, 0.1, 1);
+    /* Skeuomorphic 3D Shadow with glossy highlight */
+    box-shadow:
+        var(--card-shadow),
+        var(--inner-glow),
+        0 4px 10px -2px hsla(0, 0%, 0%, 0.5);
+    /* Outer protrusion shadow */
+    transition: all 0.4s cubic-bezier(0.2, 0, 0.2, 1);
 }
 
-.ios-item:active { transform: scale(0.95) translateY(2px); }
+.ios-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.3), transparent);
+}
+
+.ios-item:hover {
+    background: hsla(0, 0%, 100%, 0.15);
+    border-color: hsla(0, 0%, 100%, 0.3);
+    transform: translateY(-4px) scale(1.01);
+    box-shadow:
+        0 40px 80px -20px hsla(0, 0%, 0%, 0.9),
+        var(--inner-glow);
+}
+
+.light-mode .ios-item:hover {
+    background: hsl(0, 0%, 100%);
+    border-color: hsla(0, 0%, 0%, 0.15);
+}
+
+.ios-item:active {
+    transform: scale(0.98);
+}
 
 /* LED Border Jalan Otomatis (Ada Terus) */
 .led-border-line {
@@ -290,32 +424,64 @@ body::before {
 }
 
 @keyframes ledRunning {
-    0% { left: -100%; }
-    100% { left: 100%; }
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
 }
 
 .icon-box {
-    width: 44px; height: 44px;
-    border-radius: 12px;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: 22px;
     color: white;
+    box-shadow:
+        0 8px 16px hsla(0, 0%, 0%, 0.4),
+        inset 0 1px 1px hsla(0, 0%, 100%, 0.3);
+    position: relative;
+    overflow: hidden;
 }
 
 /* Warna Ikon */
-.portfolio { background: #5856D6; }
-.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-.tiktok { background: #000; border: 1px solid rgba(255,255,255,0.3); }
-.youtube { background: #FF0000; }
-.discord { background: #5865F2; } 
-.github { background: #333; }
-.email { background: linear-gradient(135deg, #1d95e8 0%, #065af3 100%); }
+.portfolio {
+    background: #5856D6;
+}
+
+.instagram {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+}
+
+.tiktok {
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.youtube {
+    background: #FF0000;
+}
+
+.discord {
+    background: #5865F2;
+}
+
+.github {
+    background: #333;
+}
+
+.email {
+    background: linear-gradient(135deg, #1d95e8 0%, #065af3 100%);
+}
 
 /* Warna Ikon Downloader - Dynamic Green Yellow */
-.downloader { 
-    background: linear-gradient(135deg, #34C759 0%, #D2FF28 100%); 
+.downloader {
+    background: linear-gradient(135deg, #34C759 0%, #D2FF28 100%);
     /* Efek inner glow tambahan biar makin mewah */
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.3);
     position: relative;
@@ -330,35 +496,49 @@ body::before {
     left: -50%;
     width: 200%;
     height: 200%;
-    background: linear-gradient(
-        45deg,
-        transparent,
-        rgba(255, 255, 255, 0.2),
-        transparent
-    );
+    background: linear-gradient(45deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent);
     transform: rotate(45deg);
     animation: shineIcon 3s infinite;
 }
 
 @keyframes shineIcon {
-    0% { transform: translateX(-150%) rotate(45deg); }
-    100% { transform: translateX(150%) rotate(45deg); }
+    0% {
+        transform: translateX(-150%) rotate(45deg);
+    }
+
+    100% {
+        transform: translateX(150%) rotate(45deg);
+    }
 }
 
 
-.label { font-weight: 600; flex-grow: 1; text-align: left; font-size: 17px; }
-.chevron { font-size: 14px; opacity: 0.3; }
+.label {
+    font-weight: 700;
+    flex-grow: 1;
+    text-align: left;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+}
+
+.chevron {
+    font-size: 14px;
+    opacity: 0.3;
+}
 
 /* --- CONTAINER EXTRA LINKS (RAPI) --- */
 /* --- CONTAINER EXTRA LINKS (CLEAN VERSION) --- */
 .extra-links {
     display: flex;
     flex-direction: column;
-    gap: 16px; /* Samakan dengan gap utama */
+    gap: 16px;
+    /* Samakan dengan gap utama */
     max-height: 0;
     opacity: 0;
     overflow: hidden;
-    
+
     /* Hilangkan semua potensi visual kotak */
     background: transparent !important;
     border: none !important;
@@ -368,10 +548,10 @@ body::before {
 
     /* Animasi smooth slide & scale */
     transform: translateY(-20px) scale(0.95);
-    transition: max-height 0.7s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.4s ease, 
-                transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-                margin 0.4s ease;
+    transition: max-height 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.4s ease,
+        transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        margin 0.4s ease;
 }
 
 /* Pastikan di Light Mode kontainer extra tetap gaib */
@@ -384,11 +564,14 @@ body::before {
 
 
 .extra-links.active {
-    max-height: 500px; /* Sesuaikan jumlah tombol */
+    max-height: 500px;
+    /* Sesuaikan jumlah tombol */
     opacity: 1;
     transform: translateY(0) scale(1);
-    margin-top: 16px !important; /* Jarak dari tombol Email */
-    margin-bottom: 16px !important; /* Jarak ke tombol See More */
+    margin-top: 16px !important;
+    /* Jarak dari tombol Email */
+    margin-bottom: 16px !important;
+    /* Jarak ke tombol See More */
 }
 
 
@@ -401,7 +584,8 @@ body::before {
     border: 1px solid var(--glass-border);
     color: var(--text-sub);
     padding: 14px;
-    border-radius: 24px; /* Samakan dengan radius tombol link */
+    border-radius: 24px;
+    /* Samakan dengan radius tombol link */
     cursor: pointer;
     font-size: 15px;
     font-weight: 700;
@@ -441,12 +625,86 @@ body::before {
 
 /* Tweak khusus Light Mode agar tetap cantik */
 .light-mode .see-more-btn {
-    background: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    background: hsla(0, 0%, 100%, 0.9);
+    box-shadow: 0 4px 15px hsla(0, 0%, 0%, 0.05);
+    color: var(--text-main);
+}
+
+/* --- BENTO GRID SYSTEM --- */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    /* Slightly tighter gap for Bento feel */
+    margin-bottom: 12px;
+}
+
+.ios-item.small {
+    flex-direction: column;
+    padding: 20px;
+    text-align: center;
+    gap: 12px;
+}
+
+.ios-item.small .icon-box {
+    width: 52px;
+    height: 52px;
+    font-size: 24px;
+}
+
+.ios-item.small .label {
+    font-size: 14px;
+    text-align: center;
+    color: inherit;
+}
+
+.light-mode .ios-item:not(.featured) {
+    background: hsl(0, 0%, 100%);
+    /* Pure white buttons in light mode */
+    color: hsl(0, 0%, 0%);
+}
+
+.ios-item.featured {
+    background: hsla(211, 100%, 50%, 0.25);
+    /* Increased opacity from 0.1 */
+    border-color: hsla(211, 100%, 50%, 0.45);
+    /* Extra gloss for the featured item */
+    background-image: linear-gradient(135deg, hsla(0, 0%, 100%, 0.1) 0%, transparent 50%);
+}
+
+.light-mode .ios-item.featured {
+    background: hsla(240, 10%, 10%, 0.85);
+    /* Transparent dark */
+    border-color: hsla(240, 10%, 0%, 0.2);
+    color: white;
+    backdrop-filter: blur(40px) saturate(200%);
+    /* Restore blur */
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+}
+
+.light-mode .ios-item.featured .label,
+.light-mode .ios-item.featured .sub-label {
+    color: white;
+}
+
+.label-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-grow: 1;
+}
+
+.sub-label {
+    font-size: 12px;
+    color: var(--text-sub);
+    font-weight: 400;
 }
 
 /* --- FOOTER & ACTIONS --- */
-.actions-row { margin-top: 30px; }
+.actions-row {
+    margin-top: 30px;
+}
+
 .theme-btn {
     background: var(--glass);
     border: 1px solid var(--glass-border);
@@ -459,11 +717,55 @@ body::before {
 
 /* --- FOOTER COMPLETE (Sync with Theme) --- */
 .ios-footer {
-    margin-top: 80px;
-    padding-bottom: 50px;
+    margin-top: 100px;
+    padding-bottom: 60px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.footer-card {
+    background: var(--glass);
+    backdrop-filter: blur(40px) saturate(220%);
+    -webkit-backdrop-filter: blur(40px) saturate(220%);
+    border: 1px solid var(--glass-border);
+    padding: 30px 40px;
+    border-radius: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 20px;
+    box-shadow: var(--card-shadow), var(--inner-glow);
+    animation: floatFooter 6s ease-in-out infinite;
+    transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.footer-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 40px 80px -20px hsla(0, 0%, 0%, 0.8), var(--inner-glow);
+}
+
+.light-mode .footer-card {
+    background: hsla(0, 0%, 100%, 0.95);
+    border-color: hsla(0, 0%, 0%, 0.1);
+}
+
+@keyframes floatFooter {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.footer-info {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
     gap: 8px;
 }
 
@@ -471,15 +773,14 @@ body::before {
 .footer-badge {
     display: flex;
     align-items: center;
-    gap: 10px;
-    background: var(--glass); /* Otomatis ganti warna sesuai mode */
-    padding: 5px 15px 5px 5px;
+    gap: 12px;
+    background: hsla(0, 0%, 50%, 0.1);
+    padding: 8px 18px 8px 8px;
     border-radius: 40px;
-    border: 1px solid var(--glass-border); /* Otomatis ganti warna sesuai mode */
+    border: 1px solid var(--glass-border);
     backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    margin-bottom: 10px;
-    transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .footer-badge:hover {
@@ -502,29 +803,41 @@ body::before {
 }
 
 .badge-text {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text-main); /* Ikut jadi Hitam di light mode, Putih di dark mode */
-    letter-spacing: 0.5px;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
 
-/* Created By Style */
+.light-mode .badge-text {
+    color: hsl(0, 0%, 0%);
+}
+
 .created-by {
-    font-size: 15px; /* Naikkan sedikit agar terbaca jelas */
-    font-weight: 800; /* Bikin teks 'Created by' jadi Extra Bold */
-    color: var(--text-main); /* Ganti dari text-sub ke text-main agar lebih putih solid */
-    letter-spacing: 0.5px;
-    opacity: 1;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-sub);
+    letter-spacing: 0.05em;
+    opacity: 0.9;
 }
 
 .created-by span {
     color: var(--accent-blue);
-    font-weight: 900; /* Nama pembuat (Diaww) tebal maksimal */
-    text-transform: uppercase; /* Bikin huruf besar semua agar makin gahar */
-    /* Efek Neon Glow yang lebih tajam */
-    text-shadow: 0 0 15px rgba(0, 122, 255, 0.6), 
-                 0 0 5px rgba(0, 122, 255, 0.4);
+    font-weight: 800;
+    text-transform: uppercase;
+    text-shadow: 0 0 20px hsla(211, 100%, 50%, 0.4);
     transition: 0.3s ease;
+}
+
+.light-mode .created-by {
+    color: hsl(0, 0%, 0%);
+    /* Solid black in light mode */
+}
+
+.light-mode .created-by span {
+    text-shadow: none;
+    color: var(--accent-blue);
 }
 
 /* Efek hover opsional: Nama makin nyala pas disentuh */
@@ -532,40 +845,52 @@ body::before {
     filter: brightness(1.5);
     text-shadow: 0 0 25px rgba(0, 122, 255, 0.8);
 }
+
 /* Copyright Style */
 .copyright {
-    font-size: 11px; /* Naikkan sedikit agar tetap terbaca */
-    color: var(--text-main); /* Pakai warna utama agar lebih solid */
-    opacity: 0.5; /* Tipis tapi tegas */
+    font-size: 10px;
+    color: var(--text-sub);
+    opacity: 0.8;
+    /* Increased opacity for visibility */
     text-transform: uppercase;
-    letter-spacing: 3px; /* Jarak huruf lebar bikin kesan eksklusif/mahal */
-    margin-top: 12px;
-    font-weight: 700; /* Bikin Bold agar konsisten dengan gaya iCard kamu */
-    
-    /* Efek Glassmorphism kecil di teks */
-    background: rgba(255, 255, 255, 0.05);
-    padding: 6px 15px;
-    border-radius: 50px;
-    display: inline-block;
+    letter-spacing: 0.2em;
+    margin-top: 15px;
+    font-weight: 700;
+    background: hsla(0, 0%, 50%, 0.05);
+    padding: 8px 16px;
+    border-radius: 40px;
+    border: 1px solid var(--glass-border);
     backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.03);
-    
-    /* Animasi halus saat hover */
     transition: all 0.3s ease;
-    cursor: default;
-    user-select: none;
+}
+
+.light-mode .copyright {
+    color: hsl(0, 0%, 0%);
+    background: hsla(0, 0%, 0%, 0.05);
 }
 
 .copyright:hover {
     opacity: 1;
-    letter-spacing: 4px; /* Huruf merenggang sedikit pas disentuh, efek tech banget */
-    background: rgba(255, 255, 255, 0.1);
+    letter-spacing: 0.3em;
+    background: hsla(0, 0%, 50%, 0.1);
 }
 
 
 /* ANIMATION */
-.fade-in { animation: iosEntrance 1s ease-out; }
+.fade-in {
+    animation: iosEntrance 1s ease-out;
+}
+
 @keyframes iosEntrance {
-    from { opacity: 0; transform: scale(1.05) translateY(20px); filter: blur(10px); }
-    to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+    from {
+        opacity: 0;
+        transform: scale(1.05) translateY(20px);
+        filter: blur(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+    }
 }

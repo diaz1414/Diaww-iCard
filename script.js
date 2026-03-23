@@ -33,7 +33,7 @@ seeMoreBtn.addEventListener('click', () => {
     }
 });
 
-// Update tahun otomatis (biar ga lupa)
+// --- YEAR AUTOMATION ---
 document.getElementById('year').textContent = new Date().getFullYear();
 
 
@@ -86,6 +86,29 @@ document.addEventListener('click', () => {
 });
 
 
+// --- STAGGERED ENTRANCE ANIMATION ---
+function initStagger() {
+    const items = document.querySelectorAll('.ios-item');
+    items.forEach((item, index) => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(20px) scale(0.95)';
+        
+        setTimeout(() => {
+            item.style.transition = 'all 0.8s cubic-bezier(0.2, 0, 0.2, 1)';
+            item.style.opacity = '1';
+            item.style.transform = 'translateY(0) scale(1)';
+        }, 150 + (index * 60)); // Faster stagger
+    });
+}
+
+// Run after a slight delay to ensure browser readiness
+setTimeout(initStagger, 100);
+
+// --- FOOTER SCROLL TO TOP ---
+document.querySelector('.footer-badge').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
 // Load saved theme
 window.onload = () => {
     const savedMode = localStorage.getItem('diaww-theme');
@@ -94,13 +117,3 @@ window.onload = () => {
         body.classList.add('light-mode');
     }
 }
-
-// Efek haptik sederhana pada tombol
-document.querySelectorAll('.ios-item').forEach(btn => {
-    btn.addEventListener('touchstart', () => {
-        btn.style.opacity = "0.7";
-    });
-    btn.addEventListener('touchend', () => {
-        btn.style.opacity = "1";
-    });
-});
