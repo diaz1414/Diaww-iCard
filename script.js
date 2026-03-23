@@ -3,12 +3,17 @@ const body = document.body;
 
 // Handle Theme Switch
 themeToggle.addEventListener('click', () => {
-    body.classList.toggle('dark-mode');
-    body.classList.toggle('light-mode');
-    
-    // Simpan ke local storage
-    const mode = body.classList.contains('dark-mode') ? 'dark' : 'light';
-    localStorage.setItem('diaww-theme', mode);
+    const isLight = body.classList.toggle('light-mode');
+    body.classList.toggle('dark-mode', !isLight);
+
+    const icon = themeToggle.querySelector('i');
+    if (isLight) {
+        icon.classList.replace('fa-sun', 'fa-moon');
+        localStorage.setItem('diaww-theme', 'light');
+    } else {
+        icon.classList.replace('fa-moon', 'fa-sun');
+        localStorage.setItem('diaww-theme', 'dark');
+    }
 });
 
 const yearSpan = document.getElementById('year');
@@ -20,10 +25,10 @@ const extraLinks = document.getElementById('extraLinks');
 seeMoreBtn.addEventListener('click', () => {
     // Toggle class active buat munculin tombol
     extraLinks.classList.toggle('active');
-    
+
     // Toggle class open buat muter icon panah
     seeMoreBtn.classList.toggle('open');
-    
+
     // Ganti teks tombol
     const span = seeMoreBtn.querySelector('span');
     if (extraLinks.classList.contains('active')) {
@@ -38,7 +43,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
 
 // Tambahkan ini di script.js
-document.querySelector('.email').parentElement.addEventListener('click', function(e) {
+document.querySelector('.email').parentElement.addEventListener('click', function (e) {
     e.preventDefault();
     window.open('mailto:ferdiazprasida@gmail.com', '_blank');
 });
@@ -67,7 +72,7 @@ island.addEventListener('click', (e) => {
         // Ganti index pesan
         currentIndex = (currentIndex + 1) % messages.length;
         islandText.innerHTML = messages[currentIndex];
-        
+
         // Animasi fade in
         islandText.classList.remove('island-fade');
     }, 200);
@@ -92,7 +97,7 @@ function initStagger() {
     items.forEach((item, index) => {
         item.style.opacity = '0';
         item.style.transform = 'translateY(20px) scale(0.95)';
-        
+
         setTimeout(() => {
             item.style.transition = 'all 0.8s cubic-bezier(0.2, 0, 0.2, 1)';
             item.style.opacity = '1';
@@ -112,8 +117,14 @@ document.querySelector('.footer-badge').addEventListener('click', () => {
 // Load saved theme
 window.onload = () => {
     const savedMode = localStorage.getItem('diaww-theme');
-    if(savedMode === 'light') {
-        body.classList.remove('dark-mode');
+    const icon = themeToggle.querySelector('i');
+    if (savedMode === 'light') {
         body.classList.add('light-mode');
+        body.classList.remove('dark-mode');
+        icon.classList.replace('fa-sun', 'fa-moon');
+    } else {
+        body.classList.add('dark-mode');
+        body.classList.remove('light-mode');
+        icon.classList.replace('fa-moon', 'fa-sun');
     }
 }
