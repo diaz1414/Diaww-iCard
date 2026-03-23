@@ -44,7 +44,7 @@ Jika kamu ingin menggunakan proyek ini di komputer lokal atau HP kamu:
 
 1.  **Clone Repository**
     ```bash
-    git clone [https://github.com/diaz1414/Diaww-iCard.git](https://github.com/diaz1414/Diaww-iCard.git)
+    git clone https://github.com/diaz1414/Diaww-iCard.git
     ```
 2.  **Masuk ke Direktori**
     ```bash
